@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amed Sabak — Software Engineer & Cybersecurity</title>
+  <meta name="description" content="Amed Sabak — Software Engineer and Cybersecurity professional based in Istanbul. SOC analysis, AppSec, penetration testing, and network security.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:          #07090f;
+      --bg-surface:  #0c101a;
+      --bg-card:     #111827;
+      --bg-card-h:   #16203a;
+      --border:      #1e2a3a;
+      --border-h:    #2a3d55;
+      --accent:      #3b82f6;
+      --accent-b:    #60a5fa;
+      --accent-dim:  rgba(59,130,246,.08);
+      --accent-mid:  rgba(59,130,246,.25);
+      --cyan:        #22d3ee;
+      --cyan-dim:    rgba(34,211,238,.08);
+      --green:       #10b981;
+      --green-dim:   rgba(16,185,129,.12);
+      --green-border:rgba(16,185,129,.3);
+      --text:        #f0f4ff;
+      --text-2:      #8fa3c0;
+      --text-3:      #4a607a;
+      --font:        'Space Grotesk', sans-serif;
+      --mono:        'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:68px; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* subtle grid */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size:48px 48px;
+      opacity:.25;
+    }
+
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--border-h); border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:var(--accent); }
+    ::selection { background:var(--accent); color:#fff; }
+
+    /* ─── NAV ─── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      height:64px;
+      background:rgba(7,9,15,.88);
+      backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner {
+      max-width:1080px; margin:0 auto;
+      padding:0 2rem; height:100%;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-logo {
+      font-family:var(--mono); font-size:.85rem;
+      color:var(--accent-b); text-decoration:none;
+      display:flex; align-items:center;
+    }
+    .blink {
+      display:inline-block; width:7px; height:15px;
+      background:var(--accent); margin-left:2px;
+      animation:blink 1.1s step-end infinite;
+    }
+    @keyframes blink { 50%{ opacity:0; } }
+
+    .nav-links { display:flex; gap:.15rem; list-style:none; }
+    .nav-links a {
+      font-family:var(--mono); font-size:.71rem;
+      color:var(--text-3); text-decoration:none;
+      padding:.38rem .7rem; border-radius:5px;
+      transition:all .2s;
+    }
+    .nav-links a:hover { color:var(--accent-b); background:var(--accent-dim); }
+
+    .nav-toggle {
+      display:none; background:none;
+      border:1px solid var(--border); border-radius:5px;
+      padding:5px 9px; cursor:pointer;
+    }
+    .nav-toggle span {
+      display:block; width:17px; height:1.5px;
+      background:var(--text-2); margin:3px 0; transition:.3s;
+    }
+
+    @media(max-width:900px){
+      .nav-toggle{ display:block; }
+      .nav-links{
+        position:fixed; top:64px; left:0; right:0;
+        background:rgba(7,9,15,.97); backdrop-filter:blur(24px);
+        flex-direction:column; align-items:flex-start;
+        padding:1.5rem 2rem; gap:.2rem;
+        border-bottom:1px solid var(--border);
+        transform:translateY(-120%); opacity:0;
+        transition:all .3s ease;
+      }
+      .nav-links.open{ transform:translateY(0); opacity:1; }
+    }
+
+    /* ─── SHARED ─── */
+    section { padding:6rem 2rem; }
+    .container { max-width:1000px; margin:0 auto; }
+
+    .stag {
+      font-family:var(--mono); font-size:.7rem;
+      color:var(--accent); margin-bottom:.4rem;
+      display:flex; align-items:center; gap:.4rem;
+    }
+    .stag::before { content:'//'; color:var(--text-3); }
+
+    .stitle {
+      font-size:clamp(1.7rem,4vw,2.5rem);
+      font-weight:700; letter-spacing:-.5px;
+      line-height:1.15; color:var(--text);
+    }
+
+    .sdiv {
+      width:36px; height:2px;
+      background:linear-gradient(90deg,var(--accent),var(--cyan));
+      margin:1.5rem 0 2.5rem; border-radius:1px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height:100vh;
+      display:flex; align-items:center;
+      padding-top:64px; padding-bottom:2rem;
+      position:relative;
+    }
+    .hero::after {
+      content:'';
+      position:absolute; top:15%; left:-8%;
+      width:600px; height:600px; pointer-events:none;
+      background:radial-gradient(circle,rgba(59,130,246,.05) 0%,transparent 65%);
+    }
+
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-family:var(--mono); font-size:.7rem;
+      color:var(--green);
+      background:var(--green-dim);
+      border:1px solid var(--green-border);
+      padding:.28rem .8rem; border-radius:100px;
+      margin-bottom:2rem;
+    }
+    .dot-green {
+      width:6px; height:6px; border-radius:50%;
+      background:var(--green);
+      animation:pulse-g 2s ease-in-out infinite;
+    }
+    @keyframes pulse-g {
+      0%,100%{ box-shadow:0 0 0 0 rgba(16,185,129,.45); }
+      50%{ box-shadow:0 0 0 6px rgba(16,185,129,0); }
+    }
+
+    .hero-term {
+      font-family:var(--mono); font-size:.78rem;
+      color:var(--text-3); margin-bottom:2rem;
+      display:flex; flex-direction:column; gap:.35rem;
+    }
+    .hero-term .l { display:flex; align-items:center; gap:.5rem; }
+    .hero-term .p { color:var(--green); }
+    .hero-term .o { color:var(--cyan); padding-left:1.5rem; }
+
+    .hero-name {
+      font-size:clamp(3.5rem,9vw,7rem);
+      font-weight:700; line-height:.95; letter-spacing:-3px;
+      margin-bottom:1.2rem;
+    }
+    .hero-name .n1 { color:var(--text); }
+    .hero-name .n2 {
+      color:transparent;
+      -webkit-text-stroke:2px var(--accent);
+    }
+
+    .hero-role {
+      font-family:var(--mono); font-size:.82rem;
+      color:var(--accent-b); letter-spacing:1.5px;
+      margin-bottom:1.2rem;
+      display:flex; align-items:center; gap:.7rem;
+    }
+    .hero-role::before { content:''; width:20px; height:1px; background:var(--accent); }
+
+    .hero-bio {
+      font-size:1.05rem; color:var(--text-2);
+      max-width:540px; margin-bottom:2.5rem; line-height:1.85;
+    }
+
+    .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; }
+
+    .btn {
+      font-family:var(--mono); font-size:.76rem;
+      padding:.68rem 1.5rem; border-radius:7px;
+      text-decoration:none; display:inline-flex;
+      align-items:center; gap:.45rem;
+      letter-spacing:.3px; transition:all .25s; cursor:pointer; border:none;
+    }
+    .btn-primary { background:var(--accent); color:#fff; font-weight:600; }
+    .btn-primary:hover {
+      background:var(--accent-b);
+      transform:translateY(-2px);
+      box-shadow:0 8px 28px var(--accent-mid);
+    }
+    .btn-ghost {
+      background:transparent; color:var(--text-2);
+      border:1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color:var(--accent); color:var(--accent-b); transform:translateY(-2px); }
+
+    /* ─── ABOUT ─── */
+    #about { background:var(--bg-surface); }
+    .about-g { display:grid; grid-template-columns:3fr 2fr; gap:3rem; align-items:start; }
+    .about-text { font-size:1.02rem; color:var(--text-2); line-height:1.9; }
+    .about-text p { margin-bottom:1.1rem; }
+    .about-text strong { color:var(--text); }
+
+    .info-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:12px; padding:1.5rem;
+    }
+    .info-card-h {
+      font-family:var(--mono); font-size:.68rem;
+      color:var(--accent); margin-bottom:1.1rem;
+      display:flex; align-items:center; gap:.4rem;
+    }
+    .info-card-h::before { content:'{}'; color:var(--text-3); }
+    .irow {
+      display:flex; justify-content:space-between;
+      padding:.52rem 0; border-bottom:1px solid var(--border);
+      font-family:var(--mono); font-size:.78rem;
+    }
+    .irow:last-child { border:none; }
+    .ik { color:var(--text-3); }
+    .iv { color:var(--text-2); text-align:right; }
+
+    @media(max-width:768px){ .about-g{ grid-template-columns:1fr; } }
+
+    /* ─── SKILLS ─── */
+    .skills-g {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:1rem;
+    }
+    .skill-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:11px; padding:1.4rem;
+      transition:all .3s;
+    }
+    .skill-card:hover {
+      border-color:var(--border-h);
+      transform:translateY(-3px);
+      box-shadow:0 10px 35px rgba(0,0,0,.35);
+    }
+    .skill-h {
+      font-size:.88rem; font-weight:600; color:var(--text);
+      margin-bottom:1rem;
+      display:flex; align-items:center; gap:.5rem;
+    }
+    .tags { display:flex; flex-wrap:wrap; gap:.35rem; }
+    .tag {
+      font-family:var(--mono); font-size:.66rem;
+      padding:.18rem .52rem; border-radius:4px;
+      background:var(--bg); border:1px solid var(--border);
+      color:var(--text-3); transition:all .2s;
+    }
+    .tag:hover { border-color:var(--accent-mid); color:var(--accent-b); }
+
+    /* ─── EXPERIENCE ─── */
+    #experience { background:var(--bg-surface); }
+    .timeline { display:flex; flex-direction:column; gap:1.1rem; }
+    .exp-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:12px; padding:2rem;
+      transition:all .3s; position:relative; overflow:hidden;
+    }
+    .exp-card::before {
+      content:'';
+      position:absolute; left:0; top:0; bottom:0; width:3px;
+      background:linear-gradient(180deg,var(--accent),var(--cyan));
+    }
+    .exp-card:hover { border-color:var(--border-h); transform:translateX(4px); }
+    .exp-top {
+      display:flex; justify-content:space-between;
+      align-items:flex-start; flex-wrap:wrap; gap:.75rem; margin-bottom:.4rem;
+    }
+    .exp-period {
+      font-family:var(--mono); font-size:.68rem;
+      color:var(--accent); padding:.2rem .7rem;
+      background:var(--accent-dim); border:1px solid var(--accent-mid);
+      border-radius:4px; white-space:nowrap;
+    }
+    .exp-title { font-size:1.05rem; font-weight:600; color:var(--text); margin-bottom:.2rem; }
+    .exp-co { font-family:var(--mono); font-size:.76rem; color:var(--cyan); margin-bottom:1rem; }
+    .bullets { list-style:none; display:flex; flex-direction:column; gap:.5rem; }
+    .bullets li {
+      font-size:.93rem; color:var(--text-2);
+      padding-left:1.2rem; position:relative; line-height:1.7;
+    }
+    .bullets li::before {
+      content:'▸'; color:var(--accent); position:absolute; left:0;
+      font-size:.72rem; top:.22rem;
+    }
+    .bullets li strong { color:var(--text); }
+
+    /* ─── EDUCATION ─── */
+    .edu-g { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; }
+    .edu-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:12px; padding:2rem; transition:all .3s;
+    }
+    .edu-card:hover { border-color:var(--border-h); }
+    .edu-period { font-family:var(--mono); font-size:.68rem; color:var(--accent); margin-bottom:.45rem; }
+    .edu-deg { font-size:1rem; font-weight:600; color:var(--text); margin-bottom:.2rem; }
+    .edu-sch { font-family:var(--mono); font-size:.75rem; color:var(--cyan); margin-bottom:1.1rem; }
+    .ltitle {
+      font-family:var(--mono); font-size:.63rem;
+      color:var(--text-3); text-transform:uppercase;
+      letter-spacing:1.5px; margin-bottom:.55rem;
+    }
+    .blist { list-style:none; display:flex; flex-direction:column; gap:.4rem; }
+    .blist li {
+      font-size:.88rem; color:var(--text-2);
+      padding-left:1.1rem; position:relative; line-height:1.65;
+    }
+    .blist li::before { content:'▸'; color:var(--accent); position:absolute; left:0; font-size:.68rem; top:.15rem; }
+    .blist li strong { color:var(--text); }
+    .edu-sep { margin:1.1rem 0; border:none; border-top:1px solid var(--border); }
+
+    .conf-g { display:grid; grid-template-columns:1fr 1fr; gap:.55rem; margin-top:.7rem; }
+    .conf-i {
+      background:var(--bg); border:1px solid var(--border);
+      border-radius:8px; padding:.75rem; transition:all .3s;
+    }
+    .conf-i:hover { border-color:var(--border-h); }
+    .conf-n { font-size:.83rem; font-weight:600; color:var(--text); margin-bottom:.15rem; }
+    .conf-m { font-family:var(--mono); font-size:.62rem; color:var(--text-3); line-height:1.6; }
+
+    @media(max-width:768px){
+      .edu-g{ grid-template-columns:1fr; }
+      .conf-g{ grid-template-columns:1fr; }
+    }
+
+    /* ─── RADIO / MUSIC ─── */
+    #music { background:var(--bg-surface); }
+    .radio-badge {
+      display:inline-flex; align-items:center; gap:.45rem;
+      font-family:var(--mono); font-size:.68rem;
+      color:var(--green); background:var(--green-dim);
+      border:1px solid var(--green-border);
+      padding:.25rem .75rem; border-radius:5px;
+      margin-bottom:1.4rem;
+    }
+    .dot-live {
+      width:5px; height:5px; border-radius:50%;
+      background:var(--green);
+      animation:pulse-g 1.6s ease-in-out infinite;
+    }
+    .radio-desc { font-size:.98rem; color:var(--text-2); max-width:580px; margin-bottom:2rem; }
+    .spotify-g {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+      gap:1.1rem;
+    }
+    .sp-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:12px; padding:1.1rem; transition:all .3s;
+    }
+    .sp-card:hover { border-color:var(--border-h); }
+    .sp-label {
+      font-family:var(--mono); font-size:.66rem;
+      color:var(--text-3); margin-bottom:.7rem;
+      display:flex; align-items:center; gap:.4rem;
+    }
+    .sp-label::before { content:'♪'; color:var(--accent); }
+    .sp-card iframe { border-radius:8px; display:block; }
+
+    /* ─── GALLERY ─── */
+    .gallery-g {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+      gap:.9rem;
+    }
+    .gal-item {
+      aspect-ratio:1; border-radius:10px; overflow:hidden;
+      border:1px solid var(--border); background:var(--bg-card);
+      display:flex; align-items:center; justify-content:center;
+      transition:all .3s;
+    }
+    .gal-item:hover { border-color:var(--border-h); transform:scale(1.02); }
+    .gal-ph {
+      font-family:var(--mono); font-size:.65rem;
+      color:var(--text-3); text-align:center; line-height:1.9;
+    }
+
+    /* ─── BLOG ─── */
+    #blog { background:var(--bg-surface); }
+    .blog-g {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+      gap:1.1rem;
+    }
+    .blog-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:12px; padding:1.8rem; transition:all .3s;
+    }
+    .blog-card:hover { border-color:var(--border-h); transform:translateY(-3px); }
+    .blog-date {
+      font-family:var(--mono); font-size:.67rem;
+      color:var(--text-3); margin-bottom:.7rem;
+    }
+    .blog-card h3 {
+      font-size:1rem; font-weight:600; color:var(--text);
+      margin-bottom:.7rem; line-height:1.4;
+    }
+    .blog-card p { font-size:.88rem; color:var(--text-2); line-height:1.75; }
+    .blog-more {
+      display:inline-flex; align-items:center; gap:.3rem;
+      margin-top:1rem; font-family:var(--mono); font-size:.7rem;
+      color:var(--accent); text-decoration:none; transition:gap .2s;
+    }
+    .blog-more:hover { gap:.55rem; color:var(--accent-b); }
+
+    /* ─── CONTACT ─── */
+    .contact-g { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+    .contact-desc { font-size:.98rem; color:var(--text-2); margin-bottom:1.8rem; line-height:1.85; }
+    .clinks { display:flex; flex-direction:column; gap:.55rem; }
+    .clink {
+      display:flex; align-items:center; gap:.9rem;
+      font-family:var(--mono); font-size:.78rem;
+      color:var(--text-2); text-decoration:none;
+      padding:.82rem 1.1rem;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:8px; transition:all .25s;
+    }
+    .clink:hover { border-color:var(--accent); color:var(--accent-b); transform:translateX(4px); }
+    .cicon { font-size:1rem; width:26px; text-align:center; flex-shrink:0; }
+
+    .cform { display:flex; flex-direction:column; gap:.85rem; }
+    .fgroup { display:flex; flex-direction:column; gap:.35rem; }
+    .fgroup label {
+      font-family:var(--mono); font-size:.66rem;
+      color:var(--text-3); letter-spacing:.8px;
+    }
+    .fgroup input, .fgroup textarea {
+      width:100%; padding:.72rem 1rem;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:8px; color:var(--text);
+      font-family:var(--font); font-size:.95rem;
+      outline:none; transition:border-color .2s;
+    }
+    .fgroup input:focus, .fgroup textarea:focus { border-color:var(--accent); }
+    .fgroup textarea { resize:vertical; min-height:105px; }
+
+    @media(max-width:768px){ .contact-g{ grid-template-columns:1fr; } }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding:2.5rem; text-align:center;
+      font-family:var(--mono); font-size:.69rem;
+      color:var(--text-3); border-top:1px solid var(--border);
+      letter-spacing:.8px;
+    }
+    footer a { color:var(--accent); text-decoration:none; }
+    footer a:hover { color:var(--accent-b); }
+
+    /* ─── FADE IN ─── */
+    .fi {
+      opacity:0; transform:translateY(16px);
+      transition:opacity .6s ease, transform .6s ease;
+    }
+    .fi.vis { opacity:1; transform:translateY(0); }
+
+    @media(max-width:480px){ section{ padding:4rem 1.2rem; } }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">amed@sabak:~<span class="blink"></span></a>
+      <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navlinks">
+        <li><a href="#about"      onclick="closeNav()">/about</a></li>
+        <li><a href="#skills"     onclick="closeNav()">/skills</a></li>
+        <li><a href="#experience" onclick="closeNav()">/experience</a></li>
+        <li><a href="#education"  onclick="closeNav()">/education</a></li>
+        <li><a href="#music"      onclick="closeNav()">/radio</a></li>
+        <li><a href="#gallery"    onclick="closeNav()">/gallery</a></li>
+        <li><a href="#blog"       onclick="closeNav()">/blog</a></li>
+        <li><a href="#contact"    onclick="closeNav()">/contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="dot-green"></span>
+        open to opportunities
+      </div>
+
+      <div class="hero-term" aria-hidden="true">
+        <div class="l"><span class="p">❯</span><span>whoami</span></div>
+        <div class="l"><span class="o">amed sabak — software engineer &amp; cybersecurity professional</span></div>
+        <div class="l"><span class="p">❯</span><span>pwd</span></div>
+        <div class="l"><span class="o">/istanbul/turkey</span></div>
+      </div>
+
+      <h1 class="hero-name">
+        <span class="n1">Amed</span><br>
+        <span class="n2">Sabak</span>
+      </h1>
+
+      <div class="hero-role">Software Engineer &amp; Cybersecurity Professional</div>
+
+      <p class="hero-bio">
+        Software Engineering graduate with hands-on experience in SOC analysis, AppSec, and penetration testing.
+        Linux daily driver, security conference attendee, and lifelong tinkerer.
+      </p>
+
+      <div class="hero-cta">
+        <a href="resume.pdf" target="_blank" class="btn btn-primary">Download Resume ↓</a>
+        <a href="#experience" class="btn btn-ghost">View Experience →</a>
+        <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="stag">about</div>
+      <h2 class="stitle">A Little Background</h2>
+      <div class="sdiv"></div>
+      <div class="about-g">
+        <div class="about-text fi">
+          <p>
+            I'm <strong>Amed</strong> — a Software Engineering graduate from Bahcesehir University and a cybersecurity
+            professional based in Istanbul. I've spent the last few years building hands-on experience across
+            <strong>SOC analysis, Application Security, SIEM management, DLP administration</strong>, and
+            <strong>OSINT-based penetration testing</strong>.
+          </p>
+          <p>
+            During my time at <strong>Halkbank</strong>, I worked long-term within the System Security, SOC, and
+            Cybersecurity teams — contributing to alert triage, DLP monitoring, static code analysis, and
+            black-box security assessments. Earlier at <strong>TFS Group</strong>, I managed the entire internal
+            network infrastructure independently.
+          </p>
+          <p>
+            I'm interested in roles across <strong>Network Security, AppSec, SOC Analysis, Penetration Testing,
+            GRC, and AI Security</strong>. When I'm not deep in a terminal, I'm producing music, attending security
+            conferences across Europe, or contributing to the local hacker community.
+          </p>
+        </div>
+        <div class="info-card fi">
+          <div class="info-card-h">quick.info</div>
+          <div class="irow"><span class="ik">location</span><span class="iv">Sisli, Istanbul</span></div>
+          <div class="irow"><span class="ik">degree</span><span class="iv">BSc Software Eng.</span></div>
+          <div class="irow"><span class="ik">focus</span><span class="iv">Cybersecurity</span></div>
+          <div class="irow"><span class="ik">os</span><span class="iv">Ubuntu / Kali</span></div>
+          <div class="irow"><span class="ik">languages</span><span class="iv">TR · KU · EN · DE</span></div>
+          <div class="irow"><span class="ik">hobby</span><span class="iv">Music Production</span></div>
+          <div class="irow"><span class="ik">coffee</span><span class="iv">always</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <div class="stag">skills</div>
+      <h2 class="stitle">What I Work With</h2>
+      <div class="sdiv"></div>
+      <div class="skills-g">
+        <div class="skill-card fi">
+          <div class="skill-h">🛡 Security &amp; Offense</div>
+          <div class="tags">
+            <span class="tag">Nmap</span><span class="tag">Metasploit</span>
+            <span class="tag">Burp Suite</span><span class="tag">Wireshark</span>
+            <span class="tag">OSINT</span><span class="tag">Black-Box Testing</span>
+            <span class="tag">Static Code Analysis</span><span class="tag">Reverse Engineering</span>
+          </div>
+        </div>
+        <div class="skill-card fi">
+          <div class="skill-h">📡 SOC &amp; Enterprise</div>
+          <div class="tags">
+            <span class="tag">SIEM</span><span class="tag">DLP</span>
+            <span class="tag">Alert Analysis</span><span class="tag">Log Management</span>
+            <span class="tag">GRC</span><span class="tag">AI Security</span>
+            <span class="tag">AppSec</span><span class="tag">Threat Modeling</span>
+          </div>
+        </div>
+        <div class="skill-card fi">
+          <div class="skill-h">🖥 Systems &amp; Networking</div>
+          <div class="tags">
+            <span class="tag">Ubuntu</span><span class="tag">Kali Linux</span>
+            <span class="tag">macOS</span><span class="tag">Windows Server</span>
+            <span class="tag">VMware</span><span class="tag">Bash</span>
+            <span class="tag">Network Design</span><span class="tag">Routers / APs</span>
+          </div>
+        </div>
+        <div class="skill-card fi">
+          <div class="skill-h">⌨ Programming</div>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">Java</span>
+            <span class="tag">SQL</span><span class="tag">HTML/CSS</span>
+            <span class="tag">JavaScript</span><span class="tag">Bash Scripting</span>
+          </div>
+        </div>
+        <div class="skill-card fi">
+          <div class="skill-h">🌐 Languages</div>
+          <div class="tags">
+            <span class="tag">Turkish (Native)</span><span class="tag">Kurdish (Native)</span>
+            <span class="tag">English (B2-C1)</span><span class="tag">German (A1-A2)</span>
+          </div>
+        </div>
+        <div class="skill-card fi">
+          <div class="skill-h">🎛 Creative</div>
+          <div class="tags">
+            <span class="tag">Music Production</span>
+            <span class="tag">Audio Mixing</span>
+            <span class="tag">Photography</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="container">
+      <div class="stag">experience</div>
+      <h2 class="stitle">Where I've Worked</h2>
+      <div class="sdiv"></div>
+      <div class="timeline">
+
+        <div class="exp-card fi">
+          <div class="exp-top">
+            <div>
+              <div class="exp-title">IT Security Systems Dept. — Part Time Employee (Intern)</div>
+              <div class="exp-co">Halkbank · Banking Sector, Head Office · Istanbul</div>
+            </div>
+            <div class="exp-period">07/2024 – 07/2025</div>
+          </div>
+          <ul class="bullets">
+            <li>Worked long-term within the <strong>System Security, SOC, and Cybersecurity</strong> teams on day-to-day security operations.</li>
+            <li>Participated in security meetings and tasks involving <strong>SIEM log and alert management</strong>.</li>
+            <li>Performed <strong>DLP and security product administration</strong> and contributed to vulnerable code analysis.</li>
+            <li>Contributed to internal <strong>AppSec static code analysis</strong> duties and black-box OSINT tests to help identify and patch minor vulnerabilities.</li>
+            <li>Discovered minor vulnerabilities in Halkbank's digital assets using <strong>OSINT and black-box testing</strong> — fixed by senior staff after report.</li>
+            <li>Observed <strong>risk analyses and CISO-level policy decisions</strong>, gaining insight into enterprise security governance.</li>
+          </ul>
+        </div>
+
+        <div class="exp-card fi">
+          <div class="exp-top">
+            <div>
+              <div class="exp-title">IT Operations Responsible Intern</div>
+              <div class="exp-co">TFS Group · Istanbul</div>
+            </div>
+            <div class="exp-period">09/2022 – 10/2023</div>
+          </div>
+          <ul class="bullets">
+            <li>Independently managed the internal company network including <strong>routers, access points, and a Windows Server 2016</strong> environment.</li>
+            <li>Developed foundational skills in <strong>system administration</strong> and infrastructure management.</li>
+            <li>Maintained and managed all company devices including computers and printers.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="container">
+      <div class="stag">education &amp; community</div>
+      <h2 class="stitle">Learning &amp; Building</h2>
+      <div class="sdiv"></div>
+      <div class="edu-g">
+
+        <div class="edu-card fi">
+          <div class="edu-period">2021 – 2025</div>
+          <div class="edu-deg">Bachelor's in Software Engineering</div>
+          <div class="edu-sch">Bahcesehir University · Istanbul</div>
+          <div class="ltitle">Cybersecurity Coursework</div>
+          <ul class="blist">
+            <li><strong>SEN2008</strong> Software Security — network/software security, secure construction, RFCs</li>
+            <li><strong>COP4467</strong> Cybersecurity &amp; InfoSec — threat modeling, risk analysis, security policies</li>
+            <li><strong>CMP4503</strong> Advanced Computer Networks — network design, wireless protocols, AI for networks</li>
+          </ul>
+          <hr class="edu-sep">
+          <div class="ltitle">Responsible Disclosures</div>
+          <ul class="blist">
+            <li>Discovered unauthorized network scanning vector on Bahcesehir's internal network — <strong>fixed after report</strong>.</li>
+            <li>Found misconfiguration exposing <strong>private data of 125,364 users</strong> on the student info portal — fixed after report.</li>
+            <li>Identified publicly accessible spreadsheet leaking contact data — <strong>domain shut down after report</strong>.</li>
+            <li>Served as <strong>Student Representative</strong> at the Dean &amp; Rector's office.</li>
+          </ul>
+        </div>
+
+        <div class="edu-card fi">
+          <div class="edu-period">2024 – 2025</div>
+          <div class="edu-deg">Conferences &amp; Communities</div>
+          <div class="edu-sch">Europe &amp; Turkey</div>
+          <div class="conf-g">
+            <div class="conf-i">
+              <div class="conf-n">OWASP BeNeLux Days 2024</div>
+              <div class="conf-m">Utrecht, Netherlands<br>Nov 28–29, 2024 · AppSec</div>
+            </div>
+            <div class="conf-i">
+              <div class="conf-n">Cyberevolution 2024</div>
+              <div class="conf-m">Frankfurt, Germany<br>Dec 3–6, 2024 · AI threats</div>
+            </div>
+            <div class="conf-i">
+              <div class="conf-n">Swiss Cyber Security Days</div>
+              <div class="conf-m">Bern, Switzerland<br>Feb 18–19, 2025</div>
+            </div>
+            <div class="conf-i">
+              <div class="conf-n">RuhrSec 2025</div>
+              <div class="conf-m">Bochum, Germany<br>Feb 20–21, 2025</div>
+            </div>
+            <div class="conf-i">
+              <div class="conf-n">Happy Hacking Space</div>
+              <div class="conf-m">Diyarbakir, Turkey<br>Local hacker community</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- RADIO / MUSIC -->
+  <section id="music">
+    <div class="container">
+      <div class="stag">radio</div>
+      <h2 class="stitle">Now Listening</h2>
+      <div class="sdiv"></div>
+      <div class="radio-badge">
+        <span class="dot-live"></span>
+        streaming live · powered by spotify
+      </div>
+      <p class="radio-desc">
+        Music is my other language. These are playlists and tracks I've been into —
+        streaming directly from Spotify. Hit play and vibe.
+      </p>
+      <div class="spotify-g">
+        <div class="sp-card fi">
+          <div class="sp-label">playlist · channel 01</div>
+          <iframe
+            style="border-radius:10px"
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0"
+            width="100%" height="352" frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="sp-card fi">
+          <div class="sp-label">playlist · channel 02</div>
+          <iframe
+            style="border-radius:10px"
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3LiO?utm_source=generator&theme=0"
+            width="100%" height="352" frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="sp-card fi">
+          <div class="sp-label">album · favorite</div>
+          <iframe
+            style="border-radius:10px"
+            src="https://open.spotify.com/embed/album/4LH4d3cOWNNsVw41Gqt2kv?utm_source=generator&theme=0"
+            width="100%" height="352" frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="container">
+      <div class="stag">gallery</div>
+      <h2 class="stitle">Snapshots</h2>
+      <div class="sdiv"></div>
+      <div class="gallery-g">
+        <div class="gal-item fi"><div class="gal-ph">drop photo<br>here<br><br>📷</div></div>
+        <div class="gal-item fi"><div class="gal-ph">drop photo<br>here<br><br>🎸</div></div>
+        <div class="gal-item fi"><div class="gal-ph">drop photo<br>here<br><br>🌄</div></div>
+        <div class="gal-item fi"><div class="gal-ph">drop photo<br>here<br><br>🐱</div></div>
+        <div class="gal-item fi"><div class="gal-ph">drop photo<br>here<br><br>💻</div></div>
+        <div class="gal-item fi"><div class="gal-ph">drop photo<br>here<br><br>🎵</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog">
+    <div class="container">
+      <div class="stag">blog</div>
+      <h2 class="stitle">Thoughts &amp; Notes</h2>
+      <div class="sdiv"></div>
+      <div class="blog-g">
+        <div class="blog-card fi">
+          <div class="blog-date">march 2026</div>
+          <h3>Setting Up My First Portfolio Site</h3>
+          <p>The journey of getting a domain, deploying on Vercel, and learning DNS the hard way.</p>
+          <a href="#" class="blog-more">read more →</a>
+        </div>
+        <div class="blog-card fi">
+          <div class="blog-date">february 2026</div>
+          <h3>Why I Chose Cybersecurity</h3>
+          <p>From curiosity about how things break to building a career around protecting them.</p>
+          <a href="#" class="blog-more">read more →</a>
+        </div>
+        <div class="blog-card fi">
+          <div class="blog-date">january 2026</div>
+          <h3>Linux Daily Driver: One Month In</h3>
+          <p>Switching from Windows to Ubuntu as my main OS. The good, the frustrating, and the fun.</p>
+          <a href="#" class="blog-more">read more →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="stag">contact</div>
+      <h2 class="stitle">Get in Touch</h2>
+      <div class="sdiv"></div>
+      <div class="contact-g">
+        <div>
+          <p class="contact-desc">
+            Whether it's about security, music, collaboration, or just to say hi —
+            I'm always open to a conversation.
+          </p>
+          <div class="clinks">
+            <a href="mailto:amedsabak@gmail.com" class="clink">
+              <span class="cicon">✉</span> amedsabak@gmail.com
+            </a>
+            <a href="https://github.com/amedsabak" target="_blank" rel="noopener" class="clink">
+              <span class="cicon">⌘</span> github.com/amedsabak
+            </a>
+            <a href="https://linkedin.com/in/amedsabak" target="_blank" rel="noopener" class="clink">
+              <span class="cicon">◆</span> linkedin.com/in/amedsabak
+            </a>
+            <a href="resume.pdf" target="_blank" class="clink">
+              <span class="cicon">↓</span> Download Resume
+            </a>
+          </div>
+        </div>
+        <form class="cform" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="fgroup">
+            <label for="name">name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required>
+          </div>
+          <div class="fgroup">
+            <label for="email">email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="fgroup">
+            <label for="msg">message</label>
+            <textarea id="msg" name="message" placeholder="What's on your mind?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Send Message →
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 <a href="#">Amed Sabak</a> · built with curiosity &amp; too much coffee</p>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('navlinks').classList.toggle('open');
+    }
+    function closeNav() {
+      document.getElementById('navlinks').classList.remove('open');
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
